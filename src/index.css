@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Audiowide&family=Exo:wght@600;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -15,14 +17,59 @@
   html {
     font-family: var(--font-sans);
     font-feature-settings: "rlig" 1, "calt" 1;
+    scroll-behavior: smooth;
+    background: #0A0A0A;
   }
 
   body {
-    @apply antialiased;
+    @apply antialiased text-white bg-[#0A0A0A];
   }
 }
 
-/* Custom utility classes for shadcn/ui patterns */
+@layer components {
+  .font-orbitron { font-family: 'Orbitron', 'Audiowide', 'Exo', var(--font-sans); }
+
+  .section-title {
+    @apply text-3xl sm:text-4xl font-extrabold uppercase tracking-[0.3em] text-transparent bg-clip-text;
+    background-image: linear-gradient(90deg, rgba(0,255,255,0.9), #fff 40%, rgba(255,69,0,0.9));
+    text-shadow: 0 0 12px rgba(0,255,255,0.25);
+  }
+
+  .label { @apply block text-xs uppercase tracking-[0.3em] text-cyan-300 mb-2; }
+  .input {
+    @apply w-full rounded-md border border-white/15 bg-black/60 text-white px-4 py-3 outline-none transition;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02), 0 0 0 0 rgba(0,255,255,0.0);
+  }
+  .input:focus {
+    box-shadow: inset 0 0 0 1px rgba(0,255,255,0.6), 0 0 24px rgba(0,255,255,0.25);
+    border-color: rgba(0,255,255,0.5);
+  }
+
+  .icon-btn {
+    @apply inline-flex items-center justify-center h-10 w-10 rounded-md border border-white/10 text-cyan-300 bg-black/60 transition relative overflow-hidden;
+  }
+  .icon-btn:hover { color: #fff; box-shadow: 0 0 24px rgba(0,255,255,0.25); }
+  .icon-btn::after {
+    content: ""; position: absolute; inset: -150% -150% auto auto; height: 200%; width: 200%;
+    background: conic-gradient(from 180deg, rgba(0,255,255,0.25), rgba(255,69,0,0.25), transparent 60%);
+    filter: blur(24px); opacity: 0; transition: opacity 300ms ease;
+  }
+  .icon-btn:hover::after { opacity: 1; }
+
+  .metallic {
+    background-image: linear-gradient(115deg, #d9fbff 0%, #9ee9ff 12%, #ffffff 28%, #d0d0d0 42%, #ffb38a 55%, #ffffff 70%, #9ee9ff 85%, #ffd1b8 100%);
+    -webkit-text-stroke: 1px rgba(255,255,255,0.35);
+    text-shadow:
+      0 2px 10px rgba(0,0,0,0.6),
+      0 0 24px rgba(0,255,255,0.25),
+      0 0 42px rgba(255,69,0,0.25);
+  }
+
+  .spark-logo {
+    text-shadow: 0 0 18px rgba(0,255,255,0.35), 0 0 36px rgba(255,69,0,0.25);
+  }
+}
+
 @layer utilities {
   .animate-in {
     animation-name: animateIn;
@@ -42,5 +89,46 @@
     --tw-exit-rotate: initial;
     --tw-exit-translate-x: initial;
     --tw-exit-translate-y: initial;
+  }
+
+  /* Glitch label */
+  .glitch { position: relative; }
+  .glitch::before, .glitch::after {
+    content: attr(data-text);
+    position: absolute; inset: 0; opacity: 0.6; mix-blend-mode: screen; pointer-events: none;
+  }
+  .glitch::before { transform: translate(1px, -1px); color: #00ffff; filter: drop-shadow(0 0 6px rgba(0,255,255,0.6)); }
+  .glitch::after { transform: translate(-1px, 1px); color: #ff4500; filter: drop-shadow(0 0 6px rgba(255,69,0,0.6)); }
+
+  /* Smoky ambient layers */
+  .smoke {
+    position: absolute; left: -10%; right: -10%; bottom: -10%; top: 40%;
+    background: radial-gradient(closest-side, rgba(255,255,255,0.12), transparent 60%);
+    filter: blur(40px);
+    animation: drift 18s linear infinite;
+    opacity: 0.25;
+  }
+  .smoke.delay-1000 { animation-delay: 8s; opacity: 0.18; }
+  @keyframes drift { 0%{ transform: translateX(-6%) translateY(0); } 50%{ transform: translateX(6%) translateY(-6%);} 100%{ transform: translateX(-6%) translateY(0);} }
+
+  .gallery-smoke {
+    background: radial-gradient(circle at 20% 80%, rgba(255,69,0,0.15), transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(0,255,255,0.18), transparent 45%);
+    filter: blur(24px);
+  }
+
+  /* Footer embers */
+  .spark-embers {
+    background:
+      radial-gradient(2px 2px at 20% 30%, rgba(255,69,0,0.9), transparent 60%),
+      radial-gradient(2px 2px at 60% 70%, rgba(255,165,0,0.9), transparent 60%),
+      radial-gradient(2px 2px at 80% 40%, rgba(0,255,255,0.8), transparent 60%),
+      radial-gradient(2px 2px at 35% 85%, rgba(255,69,0,0.8), transparent 60%);
+    animation: ember-float 6s linear infinite;
+    opacity: 0.5;
+  }
+  @keyframes ember-float {
+    0% { background-position: 20% 100%, 60% 100%, 80% 100%, 35% 100%; }
+    100% { background-position: 20% 0%, 60% 0%, 80% 0%, 35% 0%; }
   }
 }
